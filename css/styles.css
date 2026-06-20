@@ -31,8 +31,8 @@
   --c-paper: #f6f5f3; /* warm off-white for drawing panels */
 
   /* Typography */
-  --font-serif: "Cormorant Garamond", "Times New Roman", Georgia, serif;
-  --font-script: "Sacramento", "Snell Roundhand", "Brush Script MT", cursive;
+  --font-sans: "Inter", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --font-hand: "Caveat", "Comic Sans MS", "Segoe Script", cursive;
 
   /* Fluid type scale */
   --fs-hero: clamp(3rem, 12vw, 11rem);
@@ -71,7 +71,7 @@ html {
 body {
   background: var(--c-bg);
   color: var(--c-ink);
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   font-size: var(--fs-body);
   line-height: 1.6;
   font-weight: 400;
@@ -109,7 +109,7 @@ a {
   letter-spacing: 0.35em;
   text-transform: uppercase;
   color: var(--c-ink-soft);
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
 }
 
 /* Thin animated divider line */
@@ -249,11 +249,14 @@ a {
 @keyframes sign { to { clip-path: inset(0 0 0 0); } }
 
 .signature__ink {
-  font-family: var(--font-script);
-  font-size: clamp(2.6rem, 8vw, 5.5rem);
+  font-family: var(--font-hand);
+  font-size: clamp(3rem, 9vw, 6rem);
+  font-weight: 600;
   line-height: 1;
   color: var(--c-ink);
   display: inline-block;
+  /* slight tilt for a quick, scribbled signature feel */
+  transform: rotate(-3deg);
 }
 /* The faux "pen" dot that travels along the signature */
 .signature__pen {
@@ -596,7 +599,7 @@ a {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--c-ink-faint);
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
 }
 
 /* ---------------------------------------------------------------- */
@@ -729,10 +732,12 @@ a {
   border-top: 1px solid var(--c-line);
 }
 .footer__signature {
-  font-family: var(--font-script);
-  font-size: clamp(3rem, 10vw, 7rem);
+  font-family: var(--font-hand);
+  font-size: clamp(3.4rem, 11vw, 7.5rem);
+  font-weight: 600;
   line-height: 1;
   margin: 1.4rem 0;
+  transform: rotate(-3deg);
 }
 .footer__email {
   font-size: var(--fs-lead);
