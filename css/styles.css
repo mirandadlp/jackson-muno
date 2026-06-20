@@ -235,48 +235,35 @@ a {
 }
 .hero__subtitle.is-in { opacity: 1; transform: none; }
 
-/* --- Handwritten signature --- */
+/* --- Real handwritten signature (image) --- */
 .signature {
+  /* Full-bleed band so the trailing line can run off the page edge */
   position: relative;
-  display: inline-block;
-  margin-top: clamp(1rem, 3vw, 2.2rem);
-  /* Revealed left→right via clip-path by JS toggling .is-signing */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  margin-top: clamp(1.6rem, 4vw, 3.2rem);
+  overflow: hidden;            /* clip the trailing line off-page */
+  pointer-events: none;
+}
+.signature__img {
+  display: block;
+  height: clamp(120px, 17vw, 240px);
+  width: auto;                 /* preserve aspect ratio */
+  /* Center the NAME (not the whole wide image) under the title.
+     -9% ≈ the name's horizontal centre within the artwork. */
+  position: relative;
+  left: 50%;
+  transform: translateX(-9%);
+  mix-blend-mode: multiply;    /* drop the white background on the white hero */
+  /* Hidden until the pen "writes" it (JS toggles .is-signing on the parent) */
   clip-path: inset(0 100% 0 0);
 }
-.signature.is-signing {
-  animation: sign 2.4s var(--ease-soft) forwards;
+/* Linear sweep = even pen speed: writes the name, then the line extends off-page */
+.signature.is-signing .signature__img {
+  animation: sign 3s linear forwards;
 }
 @keyframes sign { to { clip-path: inset(0 0 0 0); } }
-
-.signature__ink {
-  font-family: var(--font-hand);
-  font-size: clamp(3rem, 9vw, 6rem);
-  font-weight: 600;
-  line-height: 1;
-  color: var(--c-ink);
-  display: inline-block;
-  /* slight tilt for a quick, scribbled signature feel */
-  transform: rotate(-3deg);
-}
-/* The faux "pen" dot that travels along the signature */
-.signature__pen {
-  position: absolute;
-  top: 50%;
-  right: 100%;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--c-ink);
-  opacity: 0;
-}
-.signature.is-signing .signature__pen {
-  animation: pen-travel 2.4s var(--ease-soft) forwards;
-}
-@keyframes pen-travel {
-  0%   { opacity: 1; right: 100%; }
-  92%  { opacity: 1; right: 0%; }
-  100% { opacity: 0; right: 0%; }
-}
 
 .hero__scroll-hint {
   position: absolute;
@@ -825,7 +812,7 @@ a {
   }
   .reveal, .card, .hero__subtitle { opacity: 1 !important; transform: none !important; }
   .reveal-img::after { transform: scaleX(0) !important; }
-  .signature { clip-path: none !important; }
+  .signature, .signature__img { clip-path: none !important; }
   .cursor, .cursor-trail { display: none !important; }
   @media (hover: hover) and (pointer: fine) {
     body, a, .card { cursor: auto !important; }
