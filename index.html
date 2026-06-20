@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Jackson Muno — Architectural Portfolio. Minimal, editorial, black & white architecture." />
+  <title>Jackson Muno — Architectural Portfolio</title>
+
+  <!--
+    Fonts are loaded from Google Fonts for the editorial serif and the cursive
+    signature. If you work offline, the page degrades gracefully to the system
+    serif / cursive fallbacks declared in css/styles.css.
+      - Cormorant Garamond  → editorial display + body serif
+      - Sacramento          → handwritten signature
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Sacramento&display=swap"
+    rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+  <!-- ============================================================= -->
+  <!-- CUSTOM PENCIL CURSOR (desktop / pointer devices only)          -->
+  <!-- ============================================================= -->
+  <div class="cursor" aria-hidden="true">
+    <!-- A simple pencil-tip drawn in SVG -->
+    <svg class="cursor__pencil" viewBox="0 0 24 24" width="24" height="24">
+      <path d="M3 21 L5 15 L15 5 L19 9 L9 19 L3 21 Z" fill="none" stroke="#111" stroke-width="1" stroke-linejoin="round"/>
+      <path d="M15 5 L19 9" stroke="#111" stroke-width="1"/>
+      <path d="M3 21 L5.5 18.5" stroke="#111" stroke-width="1"/>
+    </svg>
+  </div>
+  <!-- Canvas where the faint pencil trail is drawn -->
+  <canvas class="cursor-trail" aria-hidden="true"></canvas>
+
+  <!-- ============================================================= -->
+  <!-- PAGE PROGRESS / GRID DECORATION                                -->
+  <!-- ============================================================= -->
+  <div class="grid-lines" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- 1. LANDING / HERO INTRO                                        -->
+  <!-- ============================================================= -->
+  <header class="hero" id="hero">
+    <div class="hero__inner">
+      <p class="hero__eyebrow reveal">PORTFOLIO — 2026</p>
+
+      <!-- Typewriter target. JS fills the .hero__title-text span. -->
+      <h1 class="hero__title">
+        <span class="hero__title-text" aria-label="Jackson Muno"></span><span class="hero__caret" aria-hidden="true"></span>
+      </h1>
+
+      <p class="hero__subtitle">Architectural Portfolio.</p>
+
+      <!-- Handwritten signature. The text is revealed left→right to feel
+           as if it is being signed; swap the text below if needed. -->
+      <div class="signature" aria-hidden="true">
+        <span class="signature__ink">Jackson Muno</span>
+        <span class="signature__pen"></span>
+      </div>
+
+      <p class="hero__scroll-hint">Scroll to explore</p>
+    </div>
+
+    <div class="hero__corner hero__corner--tl"></div>
+    <div class="hero__corner hero__corner--tr"></div>
+    <div class="hero__corner hero__corner--bl"></div>
+    <div class="hero__corner hero__corner--br"></div>
+  </header>
+
+  <!-- ============================================================= -->
+  <!-- SITE NAVIGATION (revealed after intro)                        -->
+  <!-- ============================================================= -->
+  <nav class="nav" id="nav">
+    <a href="#hero" class="nav__brand">Jackson&nbsp;Muno</a>
+    <ul class="nav__links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Work</a></li>
+      <li><a href="#garden-atria">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ============================================================= -->
+  <!-- MAIN CONTENT (hidden beneath hero, revealed after intro)      -->
+  <!-- ============================================================= -->
+  <main class="content" id="content">
+
+    <!-- ----------------------------------------------------------- -->
+    <!-- 3. ABOUT                                                     -->
+    <!-- ----------------------------------------------------------- -->
+    <section class="about" id="about">
+      <div class="about__index reveal">
+        <span class="section-label">01 — About</span>
+      </div>
+      <div class="about__body">
+        <!-- EDIT: About copy lives here. -->
+        <p class="about__lead reveal">
+          Jackson Muno is a skilled architect with a refined global perspective.
+        </p>
+        <p class="about__text reveal">
+          His work reflects cultural sensitivity, technical discipline, and
+          experience abroad across diverse architectural contexts. He is currently
+          contributing to a major hospitality project, bringing clarity, elegance,
+          and intention to every design phase.
+        </p>
+        <!-- Thin animated divider -->
+        <span class="divider reveal-line"></span>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------- -->
+    <!-- 4. PROJECTS — horizontal scroll gallery                      -->
+    <!-- ----------------------------------------------------------- -->
+    <section class="projects" id="projects">
+      <div class="projects__head">
+        <span class="section-label reveal">02 — Selected Work</span>
+        <h2 class="projects__title reveal">Projects</h2>
+        <p class="projects__hint reveal">Drag · scroll horizontally</p>
+      </div>
+
+      <!-- The track is dragged / scrolled horizontally by js/main.js -->
+      <div class="gallery" id="gallery">
+        <div class="gallery__track" id="gallery-track">
+
+          <!-- PROJECT CARD TEMPLATE
+               Replace /assets/project-0X.jpg with your own grayscale images. -->
+          <a class="card" href="#garden-atria" data-num="01">
+            <div class="card__media">
+              <!-- EDIT IMAGE: /assets/project-01.jpg -->
+              <img src="assets/project-01.jpg" alt="Garden Atria" loading="lazy" />
+              <span class="card__lines" aria-hidden="true"></span>
+            </div>
+            <div class="card__meta">
+              <span class="card__num">01</span>
+              <h3 class="card__title">Garden Atria</h3>
+              <span class="card__cat">Residential · Atrium</span>
+              <span class="card__loc">Barcelona, ES</span>
+            </div>
+          </a>
+
+          <a class="card" href="#elevated-plaza" data-num="02">
+            <div class="card__media">
+              <!-- EDIT IMAGE: /assets/project-02.jpg -->
+              <img src="assets/project-02.jpg" alt="Elevated Plaza" loading="lazy" />
+              <span class="card__lines" aria-hidden="true"></span>
+            </div>
+            <div class="card__meta">
+              <span class="card__num">02</span>
+              <h3 class="card__title">Elevated Plaza</h3>
+              <span class="card__cat">Civic · Public Realm</span>
+              <span class="card__loc">Chicago, US</span>
+            </div>
+          </a>
+
+          <a class="card" href="#hydro-filtration-dam" data-num="03">
+            <div class="card__media">
+              <!-- EDIT IMAGE: /assets/project-03.jpg -->
+              <img src="assets/project-03.jpg" alt="Hydro-Filtration Dam" loading="lazy" />
+              <span class="card__lines" aria-hidden="true"></span>
+            </div>
+            <div class="card__meta">
+              <span class="card__num">03</span>
+              <h3 class="card__title">Hydro-Filtration Dam</h3>
+              <span class="card__cat">Infrastructure · Water</span>
+              <span class="card__loc">Catalonia, ES</span>
+            </div>
+          </a>
+
+          <a class="card" href="#west-loop-theater" data-num="04">
+            <div class="card__media">
+              <!-- EDIT IMAGE: /assets/project-04.jpg -->
+              <img src="assets/project-04.jpg" alt="West Loop Theater" loading="lazy" />
+              <span class="card__lines" aria-hidden="true"></span>
+            </div>
+            <div class="card__meta">
+              <span class="card__num">04</span>
+              <h3 class="card__title">West Loop Theater</h3>
+              <span class="card__cat">Cultural · Performance</span>
+              <span class="card__loc">Chicago, US</span>
+            </div>
+          </a>
+
+          <a class="card" href="#tunnel-poble-espanyol" data-num="05">
+            <div class="card__media">
+              <!-- EDIT IMAGE: /assets/project-05.jpg -->
+              <img src="assets/project-05.jpg" alt="Tunnel to Poble Espanyol" loading="lazy" />
+              <span class="card__lines" aria-hidden="true"></span>
+            </div>
+            <div class="card__meta">
+              <span class="card__num">05</span>
+              <h3 class="card__title">Tunnel to Poble Espanyol</h3>
+              <span class="card__cat">Urban · Threshold</span>
+              <span class="card__loc">Barcelona, ES</span>
+            </div>
+          </a>
+
+          <a class="card" href="#sketches-from-abroad" data-num="06">
+            <div class="card__media">
+              <!-- EDIT IMAGE: /assets/project-06.jpg -->
+              <img src="assets/project-06.jpg" alt="Sketches From Abroad" loading="lazy" />
+              <span class="card__lines" aria-hidden="true"></span>
+            </div>
+            <div class="card__meta">
+              <span class="card__num">06</span>
+              <h3 class="card__title">Sketches From Abroad</h3>
+              <span class="card__cat">Studies · Travel</span>
+              <span class="card__loc">Various</span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------- -->
+    <!-- 5. PROJECT SECTIONS                                          -->
+    <!--    Each section repeats the same editorial structure.        -->
+    <!-- ----------------------------------------------------------- -->
+
+    <!-- PROJECT 01 — GARDEN ATRIA -->
+    <section class="project" id="garden-atria">
+      <span class="project__bignum reveal" aria-hidden="true">01</span>
+      <div class="project__header">
+        <h2 class="project__title reveal">Garden Atria</h2>
+        <div class="project__facts reveal">
+          <span>Residential / Atrium</span>
+          <span>Barcelona, ES</span>
+          <span>2024</span>
+        </div>
+        <!-- EDIT: project description -->
+        <p class="project__desc reveal">
+          A stacked residence organised around a planted central void — daylight,
+          air, and greenery drawn vertically through the section.
+        </p>
+        <span class="divider reveal-line"></span>
+      </div>
+
+      <div class="project__grid">
+        <!-- EDIT IMAGES: replace src with /assets/* files -->
+        <figure class="project__img project__img--tall reveal-img">
+          <img src="assets/project-01.jpg" alt="Garden Atria — view" loading="lazy" />
+        </figure>
+        <figure class="project__img reveal-img">
+          <img src="assets/project-01.jpg" alt="Garden Atria — detail" loading="lazy" />
+        </figure>
+        <!-- Technical drawing placeholder -->
+        <figure class="project__drawing reveal-img">
+          <span class="project__drawing-label">Technical Drawing — Section AA</span>
+          <span class="project__drawing-grid" aria-hidden="true"></span>
+        </figure>
+      </div>
+    </section>
+
+    <!-- PROJECT 02 — ELEVATED PLAZA -->
+    <section class="project" id="elevated-plaza">
+      <span class="project__bignum reveal" aria-hidden="true">02</span>
+      <div class="project__header">
+        <h2 class="project__title reveal">Elevated Plaza</h2>
+        <div class="project__facts reveal">
+          <span>Civic / Public Realm</span>
+          <span>Chicago, US</span>
+          <span>2023</span>
+        </div>
+        <p class="project__desc reveal">
+          A raised public terrace that lifts the street into a quiet, framed
+          horizon — a civic room above the city grid.
+        </p>
+        <span class="divider reveal-line"></span>
+      </div>
+
+      <div class="project__grid">
+        <figure class="project__img project__img--tall reveal-img">
+          <img src="assets/project-02.jpg" alt="Elevated Plaza — view" loading="lazy" />
+        </figure>
+        <figure class="project__img reveal-img">
+          <img src="assets/project-02.jpg" alt="Elevated Plaza — detail" loading="lazy" />
+        </figure>
+        <figure class="project__drawing reveal-img">
+          <span class="project__drawing-label">Technical Drawing — Plan 02</span>
+          <span class="project__drawing-grid" aria-hidden="true"></span>
+        </figure>
+      </div>
+    </section>
+
+    <!-- PROJECT 03 — HYDRO-FILTRATION DAM -->
+    <section class="project" id="hydro-filtration-dam">
+      <span class="project__bignum reveal" aria-hidden="true">03</span>
+      <div class="project__header">
+        <h2 class="project__title reveal">Hydro-Filtration Dam</h2>
+        <div class="project__facts reveal">
+          <span>Infrastructure / Water</span>
+          <span>Catalonia, ES</span>
+          <span>2023</span>
+        </div>
+        <p class="project__desc reveal">
+          Infrastructure as landscape — a filtration dam whose terraced concrete
+          doubles as a public walk along the water.
+        </p>
+        <span class="divider reveal-line"></span>
+      </div>
+
+      <div class="project__grid">
+        <figure class="project__img project__img--tall reveal-img">
+          <img src="assets/project-03.jpg" alt="Hydro-Filtration Dam — view" loading="lazy" />
+        </figure>
+        <figure class="project__img reveal-img">
+          <img src="assets/project-03.jpg" alt="Hydro-Filtration Dam — detail" loading="lazy" />
+        </figure>
+        <figure class="project__drawing reveal-img">
+          <span class="project__drawing-label">Technical Drawing — Section 03</span>
+          <span class="project__drawing-grid" aria-hidden="true"></span>
+        </figure>
+      </div>
+    </section>
+
+    <!-- PROJECT 04 — WEST LOOP THEATER -->
+    <section class="project" id="west-loop-theater">
+      <span class="project__bignum reveal" aria-hidden="true">04</span>
+      <div class="project__header">
+        <h2 class="project__title reveal">West Loop Theater</h2>
+        <div class="project__facts reveal">
+          <span>Cultural / Performance</span>
+          <span>Chicago, US</span>
+          <span>2022</span>
+        </div>
+        <p class="project__desc reveal">
+          A black-box performance house wrapped in a louvred screen — the city
+          glimpses the stage; the stage borrows the city.
+        </p>
+        <span class="divider reveal-line"></span>
+      </div>
+
+      <div class="project__grid">
+        <figure class="project__img project__img--tall reveal-img">
+          <img src="assets/project-04.jpg" alt="West Loop Theater — view" loading="lazy" />
+        </figure>
+        <figure class="project__img reveal-img">
+          <img src="assets/project-04.jpg" alt="West Loop Theater — detail" loading="lazy" />
+        </figure>
+        <figure class="project__drawing reveal-img">
+          <span class="project__drawing-label">Technical Drawing — Elevation 04</span>
+          <span class="project__drawing-grid" aria-hidden="true"></span>
+        </figure>
+      </div>
+    </section>
+
+    <!-- PROJECT 05 — TUNNEL TO POBLE ESPANYOL -->
+    <section class="project" id="tunnel-poble-espanyol">
+      <span class="project__bignum reveal" aria-hidden="true">05</span>
+      <div class="project__header">
+        <h2 class="project__title reveal">Tunnel to Poble Espanyol</h2>
+        <div class="project__facts reveal">
+          <span>Urban / Threshold</span>
+          <span>Barcelona, ES</span>
+          <span>2022</span>
+        </div>
+        <p class="project__desc reveal">
+          A carved pedestrian passage that compresses, darkens, then releases
+          into the open village — a study in threshold and light.
+        </p>
+        <span class="divider reveal-line"></span>
+      </div>
+
+      <div class="project__grid">
+        <figure class="project__img project__img--tall reveal-img">
+          <img src="assets/project-05.jpg" alt="Tunnel to Poble Espanyol — view" loading="lazy" />
+        </figure>
+        <figure class="project__img reveal-img">
+          <img src="assets/project-05.jpg" alt="Tunnel to Poble Espanyol — detail" loading="lazy" />
+        </figure>
+        <figure class="project__drawing reveal-img">
+          <span class="project__drawing-label">Technical Drawing — Long Section 05</span>
+          <span class="project__drawing-grid" aria-hidden="true"></span>
+        </figure>
+      </div>
+    </section>
+
+    <!-- PROJECT 06 — SKETCHES FROM ABROAD -->
+    <section class="project" id="sketches-from-abroad">
+      <span class="project__bignum reveal" aria-hidden="true">06</span>
+      <div class="project__header">
+        <h2 class="project__title reveal">Sketches From Abroad</h2>
+        <div class="project__facts reveal">
+          <span>Studies / Travel</span>
+          <span>Various</span>
+          <span>2019 — 2024</span>
+        </div>
+        <p class="project__desc reveal">
+          A travelling notebook — quick graphite studies of streets, sections,
+          and light gathered across cities abroad.
+        </p>
+        <span class="divider reveal-line"></span>
+      </div>
+
+      <div class="project__grid project__grid--sketch">
+        <figure class="project__img reveal-img">
+          <img src="assets/project-06.jpg" alt="Sketch study I" loading="lazy" />
+        </figure>
+        <figure class="project__img reveal-img">
+          <img src="assets/project-06.jpg" alt="Sketch study II" loading="lazy" />
+        </figure>
+        <figure class="project__img reveal-img">
+          <img src="assets/project-06.jpg" alt="Sketch study III" loading="lazy" />
+        </figure>
+        <figure class="project__img reveal-img">
+          <img src="assets/project-06.jpg" alt="Sketch study IV" loading="lazy" />
+        </figure>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------- -->
+    <!-- CONTACT / FOOTER                                             -->
+    <!-- ----------------------------------------------------------- -->
+    <footer class="footer" id="contact">
+      <span class="section-label reveal">03 — Contact</span>
+      <p class="footer__signature">Jackson Muno</p>
+      <!-- EDIT: contact details -->
+      <a class="footer__email reveal" href="mailto:studio@jacksonmuno.com">studio@jacksonmuno.com</a>
+      <p class="footer__small">Architectural Portfolio © 2026 — All rights reserved.</p>
+    </footer>
+
+  </main>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

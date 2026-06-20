@@ -1,0 +1,828 @@
+/* =================================================================
+   JACKSON MUNO — ARCHITECTURAL PORTFOLIO
+   Black & white · editorial · minimal
+   -----------------------------------------------------------------
+   Sections
+     0. Variables & Reset
+     1. Custom cursor
+     2. Hero / intro (typewriter + signature)
+     3. Navigation
+     4. Content reveal mechanics
+     5. About
+     6. Projects (horizontal gallery)
+     7. Project sections
+     8. Footer
+     9. Decorative grid
+    10. Responsive
+    11. Reduced-motion
+   ================================================================= */
+
+/* ---------------------------------------------------------------- */
+/* 0. VARIABLES & RESET                                             */
+/* ---------------------------------------------------------------- */
+:root {
+  /* Palette — strictly black & white / grayscale */
+  --c-bg: #ffffff;
+  --c-ink: #111111;
+  --c-ink-soft: #5a5a5a;
+  --c-ink-faint: #9a9a9a;
+  --c-line: #e3e3e3;
+  --c-line-strong: #cdcdcd;
+  --c-paper: #f6f5f3; /* warm off-white for drawing panels */
+
+  /* Typography */
+  --font-serif: "Cormorant Garamond", "Times New Roman", Georgia, serif;
+  --font-script: "Sacramento", "Snell Roundhand", "Brush Script MT", cursive;
+
+  /* Fluid type scale */
+  --fs-hero: clamp(3rem, 12vw, 11rem);
+  --fs-display: clamp(2.5rem, 8vw, 7rem);
+  --fs-bignum: clamp(7rem, 26vw, 24rem);
+  --fs-h2: clamp(2rem, 5vw, 4.5rem);
+  --fs-lead: clamp(1.4rem, 2.6vw, 2.4rem);
+  --fs-body: clamp(1rem, 1.3vw, 1.2rem);
+  --fs-small: 0.78rem;
+
+  /* Spacing & rhythm */
+  --space-section: clamp(6rem, 14vw, 14rem);
+  --gutter: clamp(1.5rem, 5vw, 6rem);
+  --maxw: 1500px;
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur: 1.1s;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--c-bg);
+  color: var(--c-ink);
+  font-family: var(--font-serif);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  font-weight: 400;
+  overflow-x: hidden;
+}
+
+/* While the intro plays, the page is locked at the top */
+body.intro-lock {
+  overflow: hidden;
+  height: 100vh;
+}
+
+img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Force the grayscale editorial aesthetic on every image */
+  filter: grayscale(100%) contrast(1.02);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: var(--c-ink);
+  color: var(--c-bg);
+}
+
+.section-label {
+  display: inline-block;
+  font-size: var(--fs-small);
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--c-ink-soft);
+  font-family: var(--font-serif);
+}
+
+/* Thin animated divider line */
+.divider {
+  display: block;
+  height: 1px;
+  width: 100%;
+  background: var(--c-line-strong);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.4s var(--ease);
+}
+.divider.is-in {
+  transform: scaleX(1);
+}
+
+/* ---------------------------------------------------------------- */
+/* 1. CUSTOM PENCIL CURSOR                                          */
+/* ---------------------------------------------------------------- */
+.cursor,
+.cursor-trail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.cursor {
+  width: 24px;
+  height: 24px;
+  transform: translate(-2px, -22px); /* tip aligns to true pointer */
+  transition: opacity 0.3s, scale 0.2s var(--ease-soft);
+  will-change: transform;
+  mix-blend-mode: difference; /* reads on dark imagery too */
+}
+.cursor__pencil path { stroke: #fff; }
+.cursor.is-hover { scale: 1.5; }
+.cursor.is-hidden { opacity: 0; }
+
+.cursor-trail {
+  width: 100vw;
+  height: 100vh;
+  z-index: 9998;
+  opacity: 0.5;
+}
+
+/* Hide native cursor only on devices that actually have a precise pointer */
+@media (hover: hover) and (pointer: fine) {
+  body,
+  a,
+  .card { cursor: none; }
+}
+
+/* ---------------------------------------------------------------- */
+/* 2. HERO / INTRO                                                  */
+/* ---------------------------------------------------------------- */
+.hero {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  background: var(--c-bg);
+  padding: var(--gutter);
+  transition: transform 1.5s var(--ease), opacity 1.2s var(--ease);
+  will-change: transform, opacity;
+}
+/* After the intro the whole hero slides up and out, revealing the page */
+.hero.is-lifted {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hero__inner {
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.hero__eyebrow {
+  font-size: var(--fs-small);
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--c-ink-faint);
+  margin-bottom: clamp(1rem, 3vw, 2.4rem);
+}
+
+.hero__title {
+  font-size: var(--fs-hero);
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  min-height: 1em;
+}
+.hero__title-text { white-space: nowrap; }
+
+/* Blinking typewriter caret */
+.hero__caret {
+  display: inline-block;
+  width: 2px;
+  height: 0.9em;
+  margin-left: 0.06em;
+  background: var(--c-ink);
+  animation: caret-blink 0.9s steps(1) infinite;
+}
+.hero__caret.is-done { animation: none; opacity: 0; }
+@keyframes caret-blink { 50% { opacity: 0; } }
+
+.hero__subtitle {
+  font-size: var(--fs-lead);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--c-ink-soft);
+  margin-top: clamp(0.6rem, 1.6vw, 1.2rem);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 1s var(--ease), transform 1s var(--ease);
+}
+.hero__subtitle.is-in { opacity: 1; transform: none; }
+
+/* --- Handwritten signature --- */
+.signature {
+  position: relative;
+  display: inline-block;
+  margin-top: clamp(1rem, 3vw, 2.2rem);
+  /* Revealed left→right via clip-path by JS toggling .is-signing */
+  clip-path: inset(0 100% 0 0);
+}
+.signature.is-signing {
+  animation: sign 2.4s var(--ease-soft) forwards;
+}
+@keyframes sign { to { clip-path: inset(0 0 0 0); } }
+
+.signature__ink {
+  font-family: var(--font-script);
+  font-size: clamp(2.6rem, 8vw, 5.5rem);
+  line-height: 1;
+  color: var(--c-ink);
+  display: inline-block;
+}
+/* The faux "pen" dot that travels along the signature */
+.signature__pen {
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--c-ink);
+  opacity: 0;
+}
+.signature.is-signing .signature__pen {
+  animation: pen-travel 2.4s var(--ease-soft) forwards;
+}
+@keyframes pen-travel {
+  0%   { opacity: 1; right: 100%; }
+  92%  { opacity: 1; right: 0%; }
+  100% { opacity: 0; right: 0%; }
+}
+
+.hero__scroll-hint {
+  position: absolute;
+  bottom: calc(-1 * clamp(3rem, 8vh, 6rem));
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: var(--fs-small);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--c-ink-faint);
+  opacity: 0;
+  transition: opacity 1s var(--ease) 0.4s;
+}
+.hero__scroll-hint::after {
+  content: "";
+  display: block;
+  width: 1px;
+  height: 2.4rem;
+  margin: 0.8rem auto 0;
+  background: var(--c-line-strong);
+  animation: scroll-pulse 2s var(--ease-soft) infinite;
+}
+.hero__scroll-hint.is-in { opacity: 1; }
+@keyframes scroll-pulse {
+  0%, 100% { transform: scaleY(0.4); opacity: 0.4; transform-origin: top; }
+  50%      { transform: scaleY(1);   opacity: 1;   transform-origin: top; }
+}
+
+/* Thin architectural corner ticks framing the hero */
+.hero__corner {
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--c-line-strong);
+  opacity: 0;
+  transition: opacity 1s var(--ease) 0.2s;
+}
+.hero.is-framed .hero__corner { opacity: 1; }
+.hero__corner--tl { top: 4vh;    left: 4vw;    border-right: 0; border-bottom: 0; }
+.hero__corner--tr { top: 4vh;    right: 4vw;   border-left: 0;  border-bottom: 0; }
+.hero__corner--bl { bottom: 4vh; left: 4vw;    border-right: 0; border-top: 0; }
+.hero__corner--br { bottom: 4vh; right: 4vw;   border-left: 0;  border-top: 0; }
+
+/* ---------------------------------------------------------------- */
+/* 3. NAVIGATION                                                    */
+/* ---------------------------------------------------------------- */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.4rem var(--gutter);
+  mix-blend-mode: difference;
+  color: #fff;
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: opacity 0.8s var(--ease) 0.2s, transform 0.8s var(--ease) 0.2s;
+}
+.nav.is-in { opacity: 1; transform: none; }
+
+.nav__brand {
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+  font-weight: 500;
+}
+.nav__links {
+  list-style: none;
+  display: flex;
+  gap: clamp(1rem, 3vw, 2.8rem);
+}
+.nav__links a {
+  font-size: var(--fs-small);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  position: relative;
+}
+.nav__links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.5s var(--ease);
+}
+.nav__links a:hover::after { transform: scaleX(1); transform-origin: left; }
+
+/* ---------------------------------------------------------------- */
+/* 4. CONTENT REVEAL MECHANICS                                      */
+/* ---------------------------------------------------------------- */
+.content {
+  position: relative;
+  z-index: 1;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* Generic fade-up reveal (IntersectionObserver toggles .is-in) */
+.reveal {
+  opacity: 0;
+  transform: translateY(34px);
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.reveal.is-in { opacity: 1; transform: none; }
+
+/* Animated line reveal */
+.reveal-line { /* same as .divider, animated when .is-in added */ }
+
+/* Image reveal — a panel wipes away to expose the photo */
+.reveal-img {
+  position: relative;
+  overflow: hidden;
+}
+.reveal-img::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--c-bg);
+  transform: scaleX(1);
+  transform-origin: right;
+  transition: transform 1.1s var(--ease);
+  z-index: 2;
+}
+.reveal-img.is-in::after { transform: scaleX(0); }
+.reveal-img img {
+  transform: scale(1.12);
+  transition: transform 1.6s var(--ease);
+}
+.reveal-img.is-in img { transform: scale(1); }
+
+/* ---------------------------------------------------------------- */
+/* 5. ABOUT                                                         */
+/* ---------------------------------------------------------------- */
+.about {
+  display: grid;
+  grid-template-columns: 1fr 2.4fr;
+  gap: var(--gutter);
+  padding-top: var(--space-section);
+  padding-bottom: var(--space-section);
+}
+.about__index { position: relative; }
+.about__lead {
+  font-size: var(--fs-lead);
+  font-weight: 300;
+  line-height: 1.25;
+  max-width: 22ch;
+  margin-bottom: 1.8rem;
+}
+.about__text {
+  font-size: var(--fs-body);
+  color: var(--c-ink-soft);
+  max-width: 56ch;
+  margin-bottom: clamp(2rem, 5vw, 4rem);
+}
+
+/* ---------------------------------------------------------------- */
+/* 6. PROJECTS — HORIZONTAL GALLERY                                 */
+/* ---------------------------------------------------------------- */
+.projects {
+  padding-block: var(--space-section);
+  /* break out of the centred content column to go full-bleed */
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  padding-inline: var(--gutter);
+}
+.projects__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: clamp(2rem, 5vw, 4rem);
+}
+.projects__title {
+  font-size: var(--fs-h2);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+}
+.projects__hint {
+  font-size: var(--fs-small);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--c-ink-faint);
+}
+
+.gallery {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;          /* Firefox */
+  cursor: grab;
+  -webkit-overflow-scrolling: touch;
+}
+.gallery::-webkit-scrollbar { display: none; }
+.gallery.is-dragging { cursor: grabbing; }
+
+.gallery__track {
+  display: flex;
+  gap: clamp(1.4rem, 3vw, 3rem);
+  width: max-content;
+  padding: 1rem 0 2rem;
+}
+
+.card {
+  flex: 0 0 auto;
+  width: clamp(260px, 30vw, 440px);
+  /* staggered horizontal entrance — JS sets --i on each card */
+  opacity: 0;
+  transform: translateX(60px);
+  transition: opacity 1s var(--ease), transform 1s var(--ease);
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+.card.is-in { opacity: 1; transform: none; }
+
+.card__media {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: var(--c-paper);
+}
+.card__media img {
+  transition: transform 1.2s var(--ease), filter 0.8s var(--ease);
+}
+.card:hover .card__media img {
+  transform: scale(1.06);
+  filter: grayscale(100%) contrast(1.08) brightness(0.96);
+}
+
+/* Linework overlay that appears on hover */
+.card__lines {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.6s var(--ease);
+  background-image:
+    linear-gradient(to right,  rgba(255,255,255,0.35) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.35) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mix-blend-mode: overlay;
+}
+.card__lines::before,
+.card__lines::after {
+  content: "";
+  position: absolute;
+  background: rgba(255,255,255,0.6);
+}
+/* diagonal survey lines */
+.card__lines::before { inset: 18px; border: 1px solid rgba(255,255,255,0.6); background: transparent; }
+.card__lines::after  { left: 18px; right: 18px; top: 50%; height: 1px; }
+.card:hover .card__lines { opacity: 1; }
+
+.card__meta {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 1rem;
+  align-items: baseline;
+  padding-top: 1.1rem;
+}
+.card__num {
+  grid-row: span 3;
+  font-size: clamp(2.4rem, 4vw, 3.6rem);
+  font-weight: 300;
+  line-height: 0.8;
+  color: var(--c-ink);
+}
+.card__title {
+  font-size: 1.35rem;
+  font-weight: 500;
+  line-height: 1.1;
+}
+.card__cat,
+.card__loc {
+  font-size: var(--fs-small);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-ink-faint);
+}
+
+/* On-brand placeholder shown by JS when an /assets image is missing */
+.img-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  text-align: center;
+  padding: 1rem;
+  background: var(--c-paper);
+  background-image:
+    linear-gradient(to right,  var(--c-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--c-line) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+.img-placeholder__num {
+  font-size: clamp(2.6rem, 7vw, 5rem);
+  font-weight: 300;
+  line-height: 0.85;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--c-line-strong);
+}
+.img-placeholder__label {
+  font-size: var(--fs-small);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--c-ink-soft);
+}
+.img-placeholder__note {
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-ink-faint);
+  font-family: var(--font-serif);
+}
+
+/* ---------------------------------------------------------------- */
+/* 7. PROJECT SECTIONS                                              */
+/* ---------------------------------------------------------------- */
+.project {
+  position: relative;
+  padding-block: var(--space-section);
+  border-top: 1px solid var(--c-line);
+}
+
+/* Oversized ghost number */
+.project__bignum {
+  display: block;
+  font-size: var(--fs-bignum);
+  font-weight: 300;
+  line-height: 0.8;
+  color: var(--c-paper);
+  letter-spacing: -0.04em;
+  pointer-events: none;
+  margin-bottom: -0.18em;
+  position: relative;
+  z-index: 0;
+  /* outline-style ghost number reads better than solid fill */
+  -webkit-text-stroke: 1px var(--c-line-strong);
+  color: transparent;
+}
+
+.project__header {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+}
+.project__title {
+  font-size: var(--fs-display);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.015em;
+  margin-bottom: 1.6rem;
+}
+.project__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 2rem;
+  font-size: var(--fs-small);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--c-ink-soft);
+  margin-bottom: 1.6rem;
+}
+.project__desc {
+  font-size: var(--fs-lead);
+  font-weight: 300;
+  color: var(--c-ink-soft);
+  line-height: 1.35;
+  margin-bottom: 2.4rem;
+}
+
+/* Image + drawing grid */
+.project__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(1rem, 2.5vw, 2.4rem);
+  margin-top: clamp(2rem, 6vw, 5rem);
+}
+.project__img {
+  aspect-ratio: 4 / 3;
+  background: var(--c-paper);
+}
+.project__img--tall {
+  grid-row: span 2;
+  aspect-ratio: 3 / 4;
+}
+.project__grid--sketch {
+  grid-template-columns: repeat(4, 1fr);
+}
+.project__grid--sketch .project__img { aspect-ratio: 3 / 4; }
+
+/* Technical drawing placeholder panel */
+.project__drawing {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: var(--c-paper);
+  border: 1px solid var(--c-line-strong);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.project__drawing-label {
+  position: relative;
+  z-index: 1;
+  font-size: var(--fs-small);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--c-ink-faint);
+  background: var(--c-paper);
+  padding: 0.4rem 0.8rem;
+}
+.project__drawing-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right,  var(--c-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--c-line) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+/* faux section diagonals */
+.project__drawing::before,
+.project__drawing::after {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border: 1px solid var(--c-line-strong);
+  pointer-events: none;
+}
+.project__drawing::after {
+  inset: auto;
+  left: 14px; right: 14px; top: 50%;
+  height: 1px;
+  background: var(--c-line-strong);
+  border: 0;
+}
+
+/* ---------------------------------------------------------------- */
+/* 8. FOOTER                                                        */
+/* ---------------------------------------------------------------- */
+.footer {
+  text-align: center;
+  padding-block: var(--space-section);
+  border-top: 1px solid var(--c-line);
+}
+.footer__signature {
+  font-family: var(--font-script);
+  font-size: clamp(3rem, 10vw, 7rem);
+  line-height: 1;
+  margin: 1.4rem 0;
+}
+.footer__email {
+  font-size: var(--fs-lead);
+  font-style: italic;
+  font-weight: 300;
+  position: relative;
+}
+.footer__email::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -2px;
+  width: 100%; height: 1px;
+  background: var(--c-ink);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.6s var(--ease);
+}
+.footer__email:hover::after { transform: scaleX(1); transform-origin: left; }
+.footer__small {
+  margin-top: clamp(2rem, 6vw, 4rem);
+  font-size: var(--fs-small);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--c-ink-faint);
+}
+
+/* ---------------------------------------------------------------- */
+/* 9. DECORATIVE VERTICAL GRID                                      */
+/* ---------------------------------------------------------------- */
+.grid-lines {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+.grid-lines span {
+  width: 1px;
+  height: 100%;
+  background: var(--c-line);
+  opacity: 0.5;
+}
+.grid-lines span:first-child,
+.grid-lines span:last-child { opacity: 0.8; }
+
+/* ---------------------------------------------------------------- */
+/* 10. RESPONSIVE                                                   */
+/* ---------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .about {
+    grid-template-columns: 1fr;
+    gap: 1.6rem;
+  }
+  .project__grid {
+    grid-template-columns: 1fr;
+  }
+  .project__img--tall { grid-row: auto; aspect-ratio: 4 / 3; }
+  .project__grid--sketch { grid-template-columns: repeat(2, 1fr); }
+  .grid-lines span:nth-child(2),
+  .grid-lines span:nth-child(4) { display: none; }
+}
+
+@media (max-width: 600px) {
+  :root { --gutter: 1.25rem; }
+  .nav__links { gap: 1rem; }
+  .nav__links li:nth-child(3) { display: none; } /* trim crowded nav */
+  .projects__hint { display: none; }
+  .project__grid--sketch { grid-template-columns: 1fr 1fr; }
+  .card { width: 78vw; }
+}
+
+/* ---------------------------------------------------------------- */
+/* 11. REDUCED MOTION — respect user preference                     */
+/* ---------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal, .card, .hero__subtitle { opacity: 1 !important; transform: none !important; }
+  .reveal-img::after { transform: scaleX(0) !important; }
+  .signature { clip-path: none !important; }
+  .cursor, .cursor-trail { display: none !important; }
+  @media (hover: hover) and (pointer: fine) {
+    body, a, .card { cursor: auto !important; }
+  }
+}
