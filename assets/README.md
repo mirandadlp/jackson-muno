@@ -12,6 +12,11 @@ the site picks them up automatically (referenced from `index.html`):
 | `project-05.jpg`     | Tunnel to Poble Espanyol       |
 | `project-06.jpg`     | Sketches From Abroad           |
 
+The six `project-0X.jpg` files currently here are **generated placeholders**
+(grayscale architectural mock-ups). Regenerate them anytime with
+`python3 make_placeholders.py` from the repo root, or just overwrite them with
+real photography using the same filenames.
+
 Notes
 - Images are automatically rendered in black & white via a CSS `grayscale`
   filter, so colour originals are fine.
