@@ -6,9 +6,8 @@ the site picks them up automatically (referenced from `index.html`):
 | File                   | Project / use                          |
 | ---------------------- | -------------------------------------- |
 | `project-01.jpg`       | Garden Atria — gallery card            |
-| `garden-atria-01.jpg`  | Garden Atria — section, view (tall)    |
-| `garden-atria-02.jpg`  | Garden Atria — section, detail         |
-| `garden-atria-03.jpg`  | Garden Atria — section, section shot   |
+| `garden-atria-01.jpg`  | Garden Atria — section, model (tall)   |
+| `garden-atria-02.jpg`  | Garden Atria — section, atrium         |
 | `project-02.jpg`       | Elevated Plaza                         |
 | `project-03.jpg`       | Hydro-Filtration Dam                   |
 | `project-04.jpg`       | West Loop Theater                      |
@@ -27,6 +26,7 @@ Notes
   mix 3:4 and 4:3. Supply images at least ~1200px on the long edge.
 - Want different images per shot inside a project section? Edit the `src`
   attributes in `index.html` (each is marked with an `EDIT IMAGE` comment).
-- The Garden Atria section now uses three independent placeholders
-  (`garden-atria-01/02/03.jpg`) so each shot can be swapped for its own
-  real photo. Keep the filenames and overwrite in place.
+- The Garden Atria section uses two independent placeholders
+  (`garden-atria-01.jpg` = model, `garden-atria-02.jpg` = atrium) so each
+  shot can be swapped for its own real photo. Keep the filenames and
+  overwrite in place.
