@@ -6,8 +6,8 @@ the site picks them up automatically (referenced from `index.html`):
 | File                   | Project / use                          |
 | ---------------------- | -------------------------------------- |
 | `project-01.jpg`       | Garden Atria — gallery card            |
-| `garden-atria-01.jpg`  | Garden Atria — section, model (tall)   |
-| `garden-atria-02.jpg`  | Garden Atria — section, atrium         |
+| `garden-atria-02.jpg`  | Garden Atria — section, model (tall)   |
+| `garden-atria-03.jpg`  | Garden Atria — section, atrium         |
 | `project-02.jpg`       | Elevated Plaza                         |
 | `project-03.jpg`       | Hydro-Filtration Dam                   |
 | `project-04.jpg`       | West Loop Theater                      |
@@ -27,6 +27,6 @@ Notes
 - Want different images per shot inside a project section? Edit the `src`
   attributes in `index.html` (each is marked with an `EDIT IMAGE` comment).
 - The Garden Atria section uses two independent placeholders
-  (`garden-atria-01.jpg` = model, `garden-atria-02.jpg` = atrium) so each
+  (`garden-atria-02.jpg` = model, `garden-atria-03.jpg` = atrium) so each
   shot can be swapped for its own real photo. Keep the filenames and
   overwrite in place.
